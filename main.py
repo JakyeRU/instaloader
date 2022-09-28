@@ -4,9 +4,7 @@ import json
 import instaloader
 import instaloaderManager
 
-# Defining username and password variables that will get updated after validating the JSON
 username = None
-password = None
 
 # Defining the available actions
 actions = {
@@ -20,31 +18,36 @@ terminal.boot()
 if not os.name == 'nt':
     terminal.error('This script is currently only available on Windows.', shouldExit=True)
 
-# Checking whether configuration.json exists
-if not os.path.exists('./configuration.json'):
-    terminal.error('No configuration.json file found.', shouldExit=True)
+sessions = os.listdir(f'{os.getenv("localappdata")}/Instaloader')
 
-# Validating the JSON file
-try:
-    with open('./configuration.json', 'r') as file:
-        file = json.load(file)
+for index, session in enumerate(sessions):
+    # Removing the "session-" prefix
+    sessions[index] = session[8:]
 
-        if 'username' in file and 'password' in file:
-            username = file['username']
-            password = file['password']
-        else:
-            raise KeyError
-except ValueError:
-    terminal.error('The configuration.json file is invalid.', shouldExit=True)
-except KeyError:
-    terminal.error(f'The username or password is missing from configuration.json.', shouldExit=True)
+# Checking if there are any sessions available
+if not os.path.exists(f'{os.getenv("localappdata")}/Instaloader') or len(sessions) == 0:
+    terminal.info('There are no sessions available. Would you like to run the cookie_script.py? [y/n]')
+    answer = input()
+    while answer.lower() not in ['y', 'n', 'yes', 'no']:
+        terminal.error('Invalid answer. Accepted answers: y, n, yes, no.')
+        answer = input()
+    if answer in ['y', 'yes']:
+        exec(open('./cookie_script.py', 'r').read())
+    exit(1)
+
+terminal.info('Which account do you want to use?')
+terminal.info(f'Available accounts: ' + ', '.join(sessions))
+username = input()
+while username not in sessions:
+    terminal.error(f'Invalid account. Available accounts: ' + ', '.join(sessions))
+    username = input()
 
 terminal.info(f'Attempting to login to Instagram as {username}.')
 
 # Trying to sign in to Instagram
 L = instaloader.Instaloader(quiet=True)
 try:
-    L.login(user=username, passwd=password)
+    L.load_session_from_file(username=username)
 except instaloader.exceptions.BadCredentialsException:
     terminal.error(f'The password is not valid.', shouldExit=True)
 except instaloader.exceptions.ConnectionException as ConnectionException:
@@ -52,7 +55,7 @@ except instaloader.exceptions.ConnectionException as ConnectionException:
 
 terminal.success(f'Logged in as {username}.')
 
-terminal.info('Enter profile name: ')
+terminal.info('Enter the profile name you want to interact with: ')
 profile = input()
 
 # Validating profile
