@@ -16,6 +16,10 @@ actions = {
 # Showing the boot logo
 terminal.boot()
 
+# Making sure the platform is windows
+if not os.name == 'nt':
+    terminal.error('This script is currently only available on Windows.', shouldExit=True)
+
 # Checking whether configuration.json exists
 if not os.path.exists('./configuration.json'):
     terminal.error('No configuration.json file found.', shouldExit=True)
