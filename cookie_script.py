@@ -3,6 +3,7 @@ from glob import glob
 from os.path import expanduser
 from platform import system
 from sqlite3 import OperationalError, connect
+import terminal
 
 try:
     from instaloader import ConnectionException, Instaloader
@@ -22,7 +23,7 @@ def get_cookiefile():
 
 
 def import_session(cookiefile, sessionfile):
-    print("Using cookies from {}.".format(cookiefile))
+    terminal.info("Using cookies from {}.".format(cookiefile))
     conn = connect(f"file:{cookiefile}?immutable=1", uri=True)
     try:
         cookie_data = conn.execute(
@@ -37,7 +38,7 @@ def import_session(cookiefile, sessionfile):
     username = instaloader.test_login()
     if not username:
         raise SystemExit("Not logged in. Are you logged in successfully in Firefox?")
-    print("Imported session cookie for {}.".format(username))
+    terminal.info("Imported session cookie for {}.".format(username))
     instaloader.context.username = username
     instaloader.save_session_to_file(sessionfile)
 
