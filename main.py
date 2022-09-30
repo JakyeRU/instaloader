@@ -8,7 +8,8 @@ username = None
 
 # Defining the available actions
 actions = {
-    '1': '1. Download Posts'
+    '1': '1. Download Posts',
+    '2': '2. Download Stories'
 }
 
 # Showing the boot logo
@@ -82,3 +83,5 @@ while action not in actions:
 match action:
     case '1':
         instaloaderManager.download_posts(L, profile)
+    case '2':
+        instaloaderManager.download_stories(L, profile)
