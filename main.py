@@ -2,6 +2,7 @@ import os
 import terminal
 import instaloader
 import instaloaderManager
+import sessionManager
 
 username = None
 
@@ -18,8 +19,10 @@ terminal.boot()
 if not os.name == 'nt':
     terminal.error('This script is currently only available on Windows.', shouldExit=True)
 
+sessions = sessionManager.get_sessions()
+
 # Checking if there are any sessions available
-if not os.path.exists(f'{os.getenv("localappdata")}/Instaloader') or len(sessions) == 0:
+if len(sessions) == 0:
     terminal.info('There are no sessions available. Would you like to run the cookie_script.py? [y/n]')
     answer = input()
     while answer.lower() not in ['y', 'n', 'yes', 'no']:
@@ -28,12 +31,6 @@ if not os.path.exists(f'{os.getenv("localappdata")}/Instaloader') or len(session
     if answer in ['y', 'yes']:
         exec(open('./cookie_script.py', 'r').read())
     exit(1)
-
-sessions = os.listdir(f'{os.getenv("localappdata")}/Instaloader')
-
-for index, session in enumerate(sessions):
-    # Removing the "session-" prefix
-    sessions[index] = session[8:]
 
 terminal.info('Which account do you want to use?')
 terminal.info(f'Available accounts: ' + ', '.join(sessions))
