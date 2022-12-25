@@ -1,6 +1,6 @@
 import os
 
-def getSessions():
+def get_sessions():
     if not os.path.exists(f'{os.getenv("localappdata")}/Instaloader'): return []
 
     sessions = os.listdir(f'{os.getenv("localappdata")}/Instaloader')
