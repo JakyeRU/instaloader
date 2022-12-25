@@ -1,6 +1,5 @@
 import os
 import terminal
-import json
 import instaloader
 import instaloaderManager
 
