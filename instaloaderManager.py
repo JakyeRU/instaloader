@@ -34,3 +34,11 @@ def download_stories(L, profile):
                 terminal.error(f'{profile.username} story couldn\'t be downloaded.')
 
     terminal.success(f'{"Updated" if os.path.exists(f"./{profile.username}/stories") else "Downloaded"} profile {profile.username} stories.')
+
+def download_highlights(L, profile):
+    terminal.info(f'{"Updating" if os.path.exists(f"./{profile.username}/highlights") else "Downloading"} profile {profile.username} highlights...')
+
+    # Downloading the highlights
+    L.download_highlights(user=profile.userid)
+
+    terminal.success(f'{"Updated" if os.path.exists(f"./{profile.username}/highlights") else "Downloaded"} profile {profile.username} highlights.')

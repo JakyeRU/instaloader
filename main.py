@@ -9,7 +9,8 @@ username = None
 # Defining the available actions
 actions = {
     '1': '1. Download Posts',
-    '2': '2. Download Stories'
+    '2': '2. Download Stories',
+    '3': '3. Download Highlights'
 }
 
 # Showing the boot logo
@@ -81,3 +82,5 @@ match action:
         instaloaderManager.download_posts(L, profile)
     case '2':
         instaloaderManager.download_stories(L, profile)
+    case '3':
+        instaloaderManager.download_highlights(L, profile)
