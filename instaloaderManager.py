@@ -1,4 +1,3 @@
-import instaloader
 import terminal
 import os
 from pathlib import Path
